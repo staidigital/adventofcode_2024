@@ -18,7 +18,6 @@ def isSafe(l):
     
     if not (l == l_sort or l == l_reverse):
         safe = False
-
     if safe:
         return True
     else:
