@@ -1,3 +1,6 @@
-M.S
-.A.
-M.S
+M.SM.S
+.A..A.
+M.SM.S
+M.SM.S
+.A..A.
+M.SM.S
