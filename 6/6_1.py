@@ -29,7 +29,9 @@ def solve_path(guard, data):
             data[guard["row"]] = "".join(current_row)
             guard["row"] -= 1
             if guard["row"] == 0:
-                return len(set(guard["visited"]))+1
+                current_position_string = str(guard["row"]) + " " + str(guard["col"])
+                guard["visited"].append(current_position_string)
+                return guard
             elif data[guard["row"]-1][guard["col"]] == "#":
                 guard["direction"] = "right"
 
@@ -41,7 +43,9 @@ def solve_path(guard, data):
             data[guard["row"]] = "".join(current_row)
             guard["col"] += 1
             if guard["col"] == len(data[0])-1:
-                return len(set(guard["visited"]))+1
+                current_position_string = str(guard["row"]) + " " + str(guard["col"])
+                guard["visited"].append(current_position_string)
+                return guard
             if data[guard["row"]][guard["col"]+1] == "#":
                 guard["direction"] = "down"
 
@@ -55,7 +59,9 @@ def solve_path(guard, data):
             data[guard["row"]] = "".join(current_row)
             guard["row"] += 1
             if guard["row"] == len(data)-1:
-                return len(set(guard["visited"]))+1
+                current_position_string = str(guard["row"]) + " " + str(guard["col"])
+                guard["visited"].append(current_position_string)
+                return guard
             if data[guard["row"]+1][guard["col"]] == "#":
                 guard["direction"] = "left"
     
@@ -67,12 +73,16 @@ def solve_path(guard, data):
             data[guard["row"]] = "".join(current_row)
             guard["col"] -= 1
             if guard["col"] == 0:
-                return len(set(guard["visited"]))+1
+                current_position_string = str(guard["row"]) + " " + str(guard["col"])
+                guard["visited"].append(current_position_string)
+                return guard
             if data[guard["row"]][guard["col"]-1] == "#":
                 guard["direction"] = "up"
                 
     return solve_path(guard, data)
 
-print(solve_path(guard,data))
-path_complete = False
+fin_gaurd = solve_path(guard,data)
+print(len(set(fin_gaurd["visited"])))
+
+
 
