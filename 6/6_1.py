@@ -1,88 +1,33 @@
-import sys
-sys.setrecursionlimit(40000)
 import os
 path = os.getcwd()
-data = open(path + "/6/data.txt")
-data = [row.strip("\n") for row in data]
 
-guard = {
-    "row": 0,
-    "col": 0, 
-    "direction": "up",
-    "visited": []}
-for r,row in enumerate(data):
-    for c,char in enumerate(row):
-        if char == "^":
-            guard["row"] = r
-            guard["col"] = c
+with open(path + "/6/data.txt", "r") as file:
+    grid = file.readlines()
+    grid = [row.strip("\n") for row in grid]
 
-def solve_path(guard, data):
-    current_position_string = str(guard["row"]) + " " + str(guard["col"])
-    guard["visited"].append(current_position_string)
-    if guard["direction"] == "up":
-        if data[guard["row"]-1][guard["col"]] == ".":
-            row_above = list(data[guard["row"]-1])
-            current_row = list(data[guard["row"]])
-            row_above[guard["col"]] = "^"
-            current_row[guard["col"]] = "."
-            data[guard["row"]-1] = "".join(row_above)
-            data[guard["row"]] = "".join(current_row)
-            guard["row"] -= 1
-            if guard["row"] == 0:
-                current_position_string = str(guard["row"]) + " " + str(guard["col"])
-                guard["visited"].append(current_position_string)
-                return guard
-            elif data[guard["row"]-1][guard["col"]] == "#":
-                guard["direction"] = "right"
+grid = [list(x) for x in grid]
 
-    elif guard["direction"] == "right":
-        if data[guard["row"]][guard["col"]+1] == ".":
-            current_row = list(data[guard["row"]])
-            current_row[guard["col"]] = "."
-            current_row[guard["col"]+1] = "^"
-            data[guard["row"]] = "".join(current_row)
-            guard["col"] += 1
-            if guard["col"] == len(data[0])-1:
-                current_position_string = str(guard["row"]) + " " + str(guard["col"])
-                guard["visited"].append(current_position_string)
-                return guard
-            if data[guard["row"]][guard["col"]+1] == "#":
-                guard["direction"] = "down"
+def get_start():
+    for r, row in enumerate(grid):
+        for c, val in enumerate(row):
+            if val == "^":
+                return (r, c)
 
-    elif guard["direction"] == "down":
-        if data[guard["row"]+1][guard["col"]] == ".":
-            row_below = list(data[guard["row"]+1])
-            current_row = list(data[guard["row"]])
-            row_below[guard["col"]] = "^"
-            current_row[guard["col"]] = "."
-            data[guard["row"]+1] = "".join(row_below)
-            data[guard["row"]] = "".join(current_row)
-            guard["row"] += 1
-            if guard["row"] == len(data)-1:
-                current_position_string = str(guard["row"]) + " " + str(guard["col"])
-                guard["visited"].append(current_position_string)
-                return guard
-            if data[guard["row"]+1][guard["col"]] == "#":
-                guard["direction"] = "left"
-    
-    elif guard["direction"] == "left":
-        if data[guard["row"]][guard["col"]-1] == ".":
-            current_row = list(data[guard["row"]])
-            current_row[guard["col"]] = "."
-            current_row[guard["col"]-1] = "^"
-            data[guard["row"]] = "".join(current_row)
-            guard["col"] -= 1
-            if guard["col"] == 0:
-                current_position_string = str(guard["row"]) + " " + str(guard["col"])
-                guard["visited"].append(current_position_string)
-                return guard
-            if data[guard["row"]][guard["col"]-1] == "#":
-                guard["direction"] = "up"
-                
-    return solve_path(guard, data)
+num_rows = len(grid)
+num_cols = len(grid[0])
 
-fin_gaurd = solve_path(guard,data)
-print(len(set(fin_gaurd["visited"])))
+r, c = get_start()
+row_change, col_change = -1, 0
+visited = set()
 
+while True:
+    visited.add((r, c))
+    if not (0 <= r + row_change < num_rows and 0 <= c + col_change < num_cols):
+        break
+    if grid[r + row_change][c + col_change] == "#":
+        col_change, row_change = -row_change, col_change
+    else:
+        r += row_change
+        c += col_change
 
-
+print(f"Part 1: {len(visited)}")
