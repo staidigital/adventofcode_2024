@@ -6,7 +6,7 @@ data = open(path + "/7/data.txt").readlines()
 data = [row.strip("\n") for row in data]
 
 def check_solvability(row):
-    operators = ["+", "*"]
+    operators = ["+", "*", "||"]
     answer, numbers = row.split(":")
     answer = int(answer)
     numbers = numbers[1:].split(" ")
@@ -26,7 +26,7 @@ def generate_expressions(numbers, operators):
     return results
 
 def evaluate_left_to_right(expression):
-    tokens = re.split(r'(\s[\+\-\*/]\s)', expression)
+    tokens = re.split(r'(\s[\+\-\*/]|\|\|\s)', expression)
     tokens = [token.strip() for token in tokens]
     result = int(tokens[0])
     i = 1
@@ -38,6 +38,8 @@ def evaluate_left_to_right(expression):
             result += next_number
         elif operator == '*':
             result *= next_number
+        elif operator == '||':
+            result = int(str(result) + str(next_number))
 
         i += 2
     
