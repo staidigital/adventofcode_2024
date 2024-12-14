@@ -2,7 +2,7 @@ import os
 path = os.getcwd()
 from itertools import combinations
 
-with open(path + "/8/example.txt", "r") as file:
+with open(path + "/8/data.txt", "r") as file:
     grid = file.readlines()
     grid = [row.strip("\n") for row in grid]
 
@@ -51,7 +51,6 @@ def get_antenna_locations(sorted_signals):
 signals = find_signals(grid)
 sorted_signals = sort_signals(signals)
 antennas = get_antenna_locations(sorted_signals)
-print(antennas)
 legal_antenna_locations = 0
 legal_antennas = []
 for a, antenna in enumerate(antennas):
@@ -59,5 +58,4 @@ for a, antenna in enumerate(antennas):
     if 0 <= int(ant[0]) < max_rows and 0 <= int(ant[1]) < max_cols:
         legal_antenna_locations += 1
         legal_antennas.append(antenna)
-print(legal_antennas)
 print(f"Part 1: There are {legal_antenna_locations} unique antenna locations")
